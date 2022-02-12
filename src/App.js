@@ -1,4 +1,4 @@
-import { Component } from 'react/cjs/react.production.min';
+import { Component } from 'react';
 import logo from './logo.svg';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import './App.css';
