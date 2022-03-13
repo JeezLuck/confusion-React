@@ -32,6 +32,7 @@ class CommentForm extends Component {
 
     this.toggleCommentModal = this.toggleCommentModal.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+
   }
 
   toggleCommentModal() {
@@ -39,8 +40,7 @@ class CommentForm extends Component {
   }
 
   handleCommentSubmit(values) {
-    console.log("Current state is: " + JSON.stringify(values));
-    alert("Current state is: " + JSON.stringify(values));
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     this.toggleCommentModal();
   }
 
@@ -180,7 +180,7 @@ function RenderDish({ dish }) {
   }
 }
 
-function RenderComments({ comments }) {
+function RenderComments({comments, addComment, dishId}) {
   const comment = comments.map((comment) => {
     return (
       <ul key={comment.id}>
@@ -203,7 +203,7 @@ function RenderComments({ comments }) {
       <div className="col-12 col-md-5 m-1">
         <h3>Comments</h3>
         <div>{comment}</div>
-        <CommentForm comments={comment} />
+        <CommentForm comments={comment} dishId={dishId} addComment={addComment} />
       </div>
     );
   } else {
@@ -233,7 +233,10 @@ const DishDeatil = (props) => {
       </div>
       <div className="row">
         <RenderDish dish={props.dish} />
-        <RenderComments dish={props.dish} comments={props.comments} />
+        <RenderComments comments={props.comments}
+        addComment={props.addComment}
+        dishId={props.dish.id}
+      />
       </div>
     </div>
   );
