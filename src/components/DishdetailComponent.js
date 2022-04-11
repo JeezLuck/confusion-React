@@ -18,6 +18,8 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
 
 
 const required = (val) => val && val.length;
@@ -167,36 +169,48 @@ class CommentForm extends Component {
 function RenderDish({ dish }) {
   if (dish != null) {
     return (
-      <div className="col-12 col-md-5 m-1">
-        <Card>
-        <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-          <CardBody>
-            <CardTitle>{dish.name}</CardTitle>
-            <CardText>{dish.description}</CardText>
-          </CardBody>
-        </Card>
-      </div>
+
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: 'scale(0.5) translateY(-50%)'
+        }}><div className="col-12 col-md-5 m-1">
+
+          <Card>
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+            <CardBody>
+              <CardTitle>{dish.name}</CardTitle>
+              <CardText>{dish.description}</CardText>
+            </CardBody>
+          </Card>
+        </div >
+      </FadeTransform>
+
     );
   } else {
     return <div></div>;
   }
 }
 
-function RenderComments({comments, postComment, dishId}) {
+function RenderComments({ comments, postComment, dishId }) {
+
   const comment = comments.map((comment) => {
     return (
       <ul key={comment.id}>
-        <li>
-          <div>{comment.comment}</div>
-          <div>
-            {comment.author}, &nbsp;{" "}
-            {new Intl.DateTimeFormat("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "2-digit",
-            }).format(new Date(comment.date))}
-          </div>
-        </li>
+        <Fade in>
+          <li>
+            <div>{comment.comment}</div>
+            <div>
+              {comment.author}, &nbsp;{" "}
+              {new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+              }).format(new Date(comment.date))}
+            </div>
+          </li>
+        </Fade>
+
       </ul>
     );
   });
@@ -235,10 +249,13 @@ const DishDeatil = (props) => {
       </div>
       <div className="row">
         <RenderDish dish={props.dish} />
-        <RenderComments comments={props.comments}
-        postComment={props.postComment}
-        dishId={props.dish.id}
-      />
+        <Stagger in>
+          <RenderComments comments={props.comments}
+            postComment={props.postComment}
+            dishId={props.dish.id}
+          />
+        </Stagger>
+
       </div>
     </div>
   );
