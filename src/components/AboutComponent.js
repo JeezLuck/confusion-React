@@ -10,6 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import { baseUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
 
 
 
@@ -19,7 +21,7 @@ function About(props) {
 
 
 
-  function RenderLeader({leaders, isLoading, errMess}) {
+  function RenderLeader({ leaders, isLoading, errMess }) {
     if (isLoading) {
       return (
         <Loading />
@@ -36,16 +38,18 @@ function About(props) {
 
         <Media list>
           {leaders.map(leader => (
-            <Media className="mt-5">
-              <Media left className="mr-5">
-                <Media object src={baseUrl + leader.image} alt={leader.name} />
+            <Fade in>
+              <Media className="mt-5">
+                <Media left className="mr-5">
+                  <Media object src={baseUrl + leader.image} alt={leader.name} />
+                </Media>
+                <Media body>
+                  <Media heading>{leader.name}</Media>
+                  <p>{leader.designation}</p>
+                  {leader.description}
+                </Media>
               </Media>
-              <Media body>
-                <Media heading>{leader.name}</Media>
-                <p>{leader.designation}</p>
-                {leader.description}
-              </Media>
-            </Media>
+            </Fade>
           ))}
         </Media>
 
@@ -129,7 +133,9 @@ function About(props) {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <RenderLeader leaders={props.leaders.leaders} isLoading={props.leaders.isLoading} errMess={props.leaders.errMess} />
+          <Stagger in>
+            <RenderLeader leaders={props.leaders.leaders} isLoading={props.leaders.isLoading} errMess={props.leaders.errMess} />
+          </Stagger>
         </div>
       </div>
     </div>
