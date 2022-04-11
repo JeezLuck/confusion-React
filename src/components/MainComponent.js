@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
-import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, postFeedback } from '../redux/ActionCreators';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
@@ -30,7 +30,8 @@ const mapDispatchToProps = dispatch => ({
   resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
-  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment))
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+  postFeedback: (firstname,lastname, telnum, email, agree,contactType,message) => dispatch(postFeedback(firstname,lastname, telnum, email, agree,contactType,message)),
 });
 
 
@@ -92,7 +93,7 @@ class Main extends Component {
               <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
               <Route path='/menu/:dishId' component={DishWithId} />
               <Route path="/aboutus" component={() => <AboutUs leaders={this.props.leaders} />}/>
-              <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+              <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
               <Redirect to="/home" />
             </Switch>
           </CSSTransition>

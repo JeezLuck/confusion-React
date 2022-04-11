@@ -19,8 +19,6 @@ function About(props) {
 
 
 
-
-
   function RenderLeader({leaders, isLoading, errMess}) {
     if (isLoading) {
       return (
