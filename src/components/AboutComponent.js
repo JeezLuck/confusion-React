@@ -8,23 +8,51 @@ import {
   Media
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+
+
+
+
 
 function About(props) {
 
 
-  function RenderLeader({ leader }) {
-    return (
-      <Media className="mt-5">
-        <Media left className="mr-5">
-          <Media object src={leader.image} alt={leader.name} />
+
+
+
+  function RenderLeader({leaders, isLoading, errMess}) {
+    if (isLoading) {
+      return (
+        <Loading />
+      );
+    }
+    else if (errMess) {
+      return (
+        <h4>{errMess}</h4>
+      );
+    }
+    else
+
+      return (
+
+        <Media list>
+          {leaders.map(leader => (
+            <Media className="mt-5">
+              <Media left className="mr-5">
+                <Media object src={baseUrl + leader.image} alt={leader.name} />
+              </Media>
+              <Media body>
+                <Media heading>{leader.name}</Media>
+                <p>{leader.designation}</p>
+                {leader.description}
+              </Media>
+            </Media>
+          ))}
         </Media>
-        <Media body>
-          <Media heading>{leader.name}</Media>
-          <p>{leader.designation}</p>
-          {leader.description}
-        </Media>
-      </Media>
-    );
+
+
+      );
   }
 
   return (
@@ -103,11 +131,7 @@ function About(props) {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <Media list>
-            {props.leaders.map(leader => (
-              <RenderLeader leader={leader} />
-            ))}
-          </Media>
+          <RenderLeader leaders={props.leaders.leaders} isLoading={props.leaders.isLoading} errMess={props.leaders.errMess} />
         </div>
       </div>
     </div>
